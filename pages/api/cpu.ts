@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { CpuService } from "../../service/cpu.service";
+import SERVER_CONFIG from "../../server.config";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +14,15 @@ export default async function handler(
     const free = await cpuService.getCpuFree();
     const model = await cpuService.getCpuModel();
     const loadAvg = await cpuService.getCpuLoadAvg();
-    //const loadAvgTime = await cpuService.getCpuLoadAvgTime("1m");
+    const loadAvgTime1m = await cpuService.getCpuLoadAvgTime(
+      SERVER_CONFIG.cpu.loadAvg1M
+    );
+    const loadAvgTime5m = await cpuService.getCpuLoadAvgTime(
+      SERVER_CONFIG.cpu.loadAvg5M
+    );
+    const loadAvgTime15m = await cpuService.getCpuLoadAvgTime(
+      SERVER_CONFIG.cpu.loadAvg15M
+    );
 
     res.status(200).json({
       count: count / 2,
@@ -21,7 +30,9 @@ export default async function handler(
       free: free,
       model: model,
       loadAvg: loadAvg,
-      // loadAvgTime: loadAvgTime,
+      loadAvgTime1m: loadAvgTime1m,
+      loadAvgTime5m: loadAvgTime5m,
+      loadAvgTime15m: loadAvgTime15m,
     });
   }
 }
