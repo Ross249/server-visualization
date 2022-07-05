@@ -5,13 +5,11 @@ import Container from "../components/Container";
 
 const Home: NextPage = () => {
   return (
-    <div>
-      <div className="flex w-screen h-screen">
-        <SideBar />
-        <div className="w-screen">
-          <Header />
-          <Container />
-        </div>
+    <div className=" bg-gray-200">
+      <SideBar />
+      <div className="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
+        <Header />
+        <Container />
       </div>
     </div>
   );
