@@ -1,5 +1,4 @@
 import React from "react";
-import RightBar from "./RIghtBar";
 
 const Container = () => {
   return (

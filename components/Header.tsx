@@ -2,12 +2,12 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
+    <div className="sticky z-10 top-0 h-16   lg:py-2.5">
       <div className="px-6 flex items-center justify-between space-x-4 2xl:container">
         <h5 hidden className="text-2xl text-gray-600 font-medium lg:block">
           Dashboard
         </h5>
-        <button className="w-12 h-16 -mr-2 border-r lg:hidden">
+        <button className="w-12 h-16 -mr-2  lg:hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 my-auto"
@@ -26,7 +26,7 @@ const Header = () => {
         <div className="flex space-x-4">
           <div hidden className="md:block">
             <div className="relative flex items-center text-gray-400 focus-within:text-cyan-400">
-              <span className="absolute left-4 h-6 flex items-center pr-3 border-r border-gray-300">
+              <span className="absolute left-4 h-6 flex items-center pr-3 ">
                 <svg
                   xmlns="http://ww50w3.org/2000/svg"
                   className="w-4 fill-current"
@@ -44,13 +44,13 @@ const Header = () => {
                 name="leadingIcon"
                 id="leadingIcon"
                 placeholder="Search here"
-                className="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-gray-300 focus:border-cyan-300 transition"
+                className="w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none "
               />
             </div>
           </div>
           <button
             aria-label="search"
-            className="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden"
+            className="w-10 h-10 rounded-xl md:hidden"
           >
             <svg
               xmlns="http://ww50w3.org/2000/svg"
@@ -64,10 +64,7 @@ const Header = () => {
               ></path>
             </svg>
           </button>
-          <button
-            aria-label="chat"
-            className="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-          >
+          <button aria-label="chat" className="w-10 h-10 rounded-xl">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 m-auto text-gray-600"
@@ -83,10 +80,7 @@ const Header = () => {
               />
             </svg>
           </button>
-          <button
-            aria-label="notification"
-            className="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
-          >
+          <button aria-label="notification" className="w-10 h-10 rounded-xl ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 m-auto text-gray-600"
