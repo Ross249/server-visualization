@@ -8,37 +8,31 @@ const SideBar = () => {
     // 👆 false parameter is required for react project
   }, []);
   return (
-    <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen   transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
+    <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen   transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%] bg-base-200">
       <div>
         <div className="-mx-6 px-6 py-4">
-          <a href="#" title="home">
-            <img
-              src="https://tailus.io/sources/blocks/stats-cards/preview/images/logo.svg"
-              className="w-32"
-              alt="tailus logo"
-            />
+          <a href="#" title="home" className="flex-0 btn btn-ghost px-2">
+            <div className="font-title text-primary inline-flex text-lg transition-all duration-200 md:text-3xl">
+              Server Observer
+            </div>
           </a>
         </div>
 
         <div className="mt-8 text-center">
           <img
-            src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp"
-            alt=""
+            src="https://www.jimmieluo.com/static/image/peep.png"
+            alt="avatar"
             className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
           />
           <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-            Cynthia J. Watts
+            Jim Luo
           </h5>
           <span className="hidden text-gray-400 lg:block">Admin</span>
         </div>
 
-        <ul className="space-y-2 tracking-wide mt-8">
+        <ul className="menu menu-compact flex flex-col p-0 px-4">
           <li>
-            <a
-              href="#"
-              aria-label="dashboard"
-              className="relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-gradient-to-r from-sky-600 to-cyan-400"
-            >
+            <a href="#" aria-label="dashboard" className="flex gap-4 active  ">
               <svg className="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
                 <path
                   d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z"
@@ -177,9 +171,18 @@ const SideBar = () => {
         </button>
       </div>
       <select data-choose-theme>
-        <option value="">Default</option>
+        <option value="light">Default</option>
         <option value="dark">Dark</option>
         <option value="cyberpunk">cyberpunk</option>
+        <option value="retro">retro</option>
+        <option value="synthwave">synthwave</option>
+        <option value="lofi">lofi</option>
+        <option value="pastel">pastel</option>
+        <option value="fantasy">fantasy</option>
+        <option value="wireframe">wireframe</option>
+        <option value="emerald">emerald</option>
+        <option value="cupcake">cupcake</option>
+        <option value="coffee">coffee</option>
       </select>
     </aside>
   );
