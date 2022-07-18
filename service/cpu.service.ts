@@ -1,4 +1,5 @@
 import osu from "node-os-utils";
+import run_shell_command from "../test";
 
 export class CpuService {
   cpu = osu.cpu;

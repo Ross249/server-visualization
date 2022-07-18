@@ -1,9 +1,8 @@
-const exec = require("child_process").exec;
+var exec = require("child_process").exec;
 const cpuAll = require("./execute.config");
 
 const s = JSON.stringify(cpuAll).replaceAll('"', '\\"');
 
-let pre;
 function run_shell_command(payloads, cb) {
   exec(
     `cd get_sys_state_V1.0 && ./client 1 1 "${payloads}"`,
@@ -17,7 +16,7 @@ function run_shell_command(payloads, cb) {
   );
 }
 
-let time = 1;
+let pre;
 let preIdle = 0,
   preIowait = 0,
   preNoIdle = 0,
@@ -59,3 +58,5 @@ run_shell_command(s, function (result) {
     return percentage;
   }
 });
+
+module.exports = { run_shell_command, s };
