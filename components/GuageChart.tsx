@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { run_shell_command, s } from "../test";
 
 const angleToDegree = (angle: number) => {
   return angle * (180 / Math.PI);
@@ -14,13 +13,14 @@ const GuageChart = () => {
   const outerRadius = 30;
   const arcMin = (-Math.PI * 2) / 3;
   const arcMax = (Math.PI * 2) / 3;
-  let pre: any;
-  let preIdle = 0,
-    preIowait = 0,
-    preNoIdle = 0,
-    preTotal = 0,
-    pIDLE = 0,
-    percent = 0;
+
+  let preAngle = 0;
+
+  const fetchCpuData = async () => {
+    const response = await fetch("/api/cpu");
+    const data = await response.json();
+    setPercentage(Number((data.usage * 0.01).toFixed(2)));
+  };
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -28,8 +28,6 @@ const GuageChart = () => {
     const chart = document.getElementById("chart");
     const width: number | undefined = chart?.clientWidth;
     const height: number | undefined = chart?.clientHeight;
-
-    console.log(width, height);
 
     const arc: any = d3
       .arc()
@@ -67,7 +65,7 @@ const GuageChart = () => {
       .style("alignment-baseline", "central") //相对父元素对齐方式
       .style("text-anchor", "middle") //文本锚点，居中
       .attr("y", 25) //到中心的距离
-      .text(12.65);
+      .text(0);
     //添加仪表盘显示数值的单位
     g.append("text")
       .style("font-size", "0.8em")
@@ -101,68 +99,42 @@ const GuageChart = () => {
       .style("stroke", "#A1A6AD")
       .attr("transform", "rotate(" + angleToDegree(currentAngle) + ")");
 
-    run_shell_command(s, function (result: any) {
-      if (pre === undefined) {
-        pre = JSON.parse(result);
-        preIdle = pre.cpu.jiffies[0].idle;
-        preIowait = pre.cpu.jiffies[0].iowait;
-        pIDLE = preIdle + preIowait;
-        preNoIdle =
-          pre.cpu.jiffies[0].user +
-          pre.cpu.jiffies[0].nice +
-          pre.cpu.jiffies[0].sys +
-          pre.cpu.jiffies[0].irq +
-          pre.cpu.jiffies[0].softirq;
-        preTotal = pIDLE + preNoIdle;
-      } else {
-        pre = JSON.parse(result);
-        let idle = pre.cpu.jiffies[0].idle;
-        let Iowait = pre.cpu.jiffies[0].iowait;
-        let IDLE = idle + Iowait;
-        let NoIdle =
-          pre.cpu.jiffies[0].user +
-          pre.cpu.jiffies[0].nice +
-          pre.cpu.jiffies[0].sys +
-          pre.cpu.jiffies[0].irq +
-          pre.cpu.jiffies[0].softirq;
-        let total = IDLE + NoIdle;
-        percent = (total - preTotal - (IDLE - pIDLE)) / (total - preTotal);
-        setPercentage(percent);
-        console.log(percentage);
-        preIdle = idle;
-        preIowait = Iowait;
-        pIDLE = IDLE;
-        preNoIdle = NoIdle;
-        preTotal = total;
-        return percentage;
-      }
-    });
+    const interval = setInterval(() => {
+      fetchCpuData();
+      console.log("per" + percentage);
 
-    //更新数值
-    valueLabel.text(percentage);
+      //更新数值
+      valueLabel.text(percentage * 100);
+      //更新圆弧，并且设置渐变动效
+      foreground
+        .transition()
+        .duration(750)
+        .ease(d3.easeElastic) //设置来回弹动的效果
+        .attrTween("d", arcTween(percentage * (arcMax - arcMin) + arcMin)); //设置圆弧的结束角度
 
-    //更新圆弧，并且设置渐变动效
-    foreground
-      .transition()
-      .duration(750)
-      .ease(d3.easeElastic) //设置来回弹动的效果
-      .attrTween("d", arcTween((0.1 * (Math.PI * 2)) / 3)); //设置圆弧的结束角度
+      //更新圆弧末端的指针标记，并且设置渐变动效
+      tick
+        .transition()
+        .duration(750)
+        .ease(d3.easeElastic) //设置来回弹动的效果
+        .attrTween("transform", function () {
+          //设置“transform”属性的渐变，原理同上面的arcTween方法
+          const i = d3.interpolate(
+            angleToDegree(preAngle),
+            angleToDegree(percentage * (arcMax - arcMin) + arcMin)
+          ); //取插值
+          return function (t) {
+            return "rotate(" + i(t) + ")";
+          };
+        });
+      preAngle = percentage * arcMax;
+      console.log("angle" + preAngle);
+    }, 1000);
 
-    //更新圆弧末端的指针标记，并且设置渐变动效
-    tick
-      .transition()
-      .duration(750)
-      .ease(d3.easeElastic) //设置来回弹动的效果
-      .attrTween("transform", function () {
-        //设置“transform”属性的渐变，原理同上面的arcTween方法
-        const i = d3.interpolate(
-          angleToDegree(0),
-          angleToDegree(0.1 * (Math.PI * 2)) / 3
-        ); //取插值
-        return function (t) {
-          return "rotate(" + i(t) + ")";
-        };
-      });
+    return () => {
+      d3.select(svgRef.current).exit().remove();
+      clearInterval(interval);
+    };
   }, [percentage]);
 
   return (
